@@ -1,0 +1,1058 @@
+/*
+@font-face {
+    font-family: 'Spotifry-Circular';
+    src:    url('./../fonts/Circular Std Font.otf') format('opentype'),
+            url('./../fonts/circular-std-medium-500.ttf') format('truetype'),
+            url('./../fonts/CircularStd-Black.otf') format('opentype'),
+            url('./../fonts/CircularStd-BlackItalic.otf') format('opentype'),
+            url('./../fonts/CircularStd-Bold.otf') format('opentype'),
+            url('./../fonts/CircularStd-BoldItalic.otf') format('opentype'),
+            url('./../fonts/CircularStd-Book.otf') format('opentype'),
+            url('./../fonts/CircularStd-BookItalic.otf') format('opentype'),
+            url('./../fonts/CircularStd-Medium.otf') format('opentype'),
+            url('./../fonts/CircularStd-MediumItalic.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+    */
+
+    
+    @font-face {
+        font-family: 'Spotifry-Circular';
+        src:    url('./../fonts/CircularStd-Book.otf') format('opentype');
+        
+        font-weight: normal;
+        font-style: normal;
+    }
+
+
+
+body, html{
+    height: 100%;
+    max-height: 100vh;
+    width: 100%;
+
+    background: #000000;
+    margin:0;
+    color: white;
+    font-family: Spotifry-Circular, Helvetica;
+    overflow: hidden;
+}
+#main{
+    position: fixed;
+    top: 10%;    
+    bottom: 15%; 
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    z-index: 1;
+}
+
+
+
+.spotify-logo{
+    font-size: 200%;
+    padding: 10px 30px;
+}
+
+.bell-icon{
+    margin: 0 10px;
+}
+
+.display-flex-row{
+    display:flex;
+    flex-direction: row;
+
+}
+.display-flex-column{
+    display: flex;
+    flex-direction: column;
+}
+.align-center{
+    align-items: center;
+}
+.gap-10{
+    gap: 10px;
+}
+.gap-30{
+    gap:30px;
+}
+.floating-div{
+    background-color: rgb(44, 44, 44);
+    border-radius: 20px;
+    padding: 5px;
+    height: max-content;
+    
+}
+.color-grey{
+    color:grey;
+}
+.left-div-floating-div{
+    background-color: rgb(44, 44, 44);
+    border-radius: 12px;
+    padding: 10px;
+}
+.button-grey-bg{
+    padding: 10px;
+    background-color: rgb(51, 51, 51);
+    border-radius: 10px;
+    color: white;
+    width: max-content;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+}
+.button-grey-bg:active{
+    transform: scale(0.9);
+}
+.button-grey-bg.current{
+
+    background-color: white;
+    border-radius: 15px;
+    color: black;
+}
+.button-white-bg{
+    padding: 10px;
+    background-color: white;
+    border-radius: 20px;
+    color: black;
+    width: max-content;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+}
+.left-div-header{
+    font-size: large;
+    font-weight: bold;
+}
+.grey-link{
+    color: grey;
+    text-decoration: none;
+}
+.grey-link:hover{
+    color: white;
+    text-decoration: underline;
+}
+.row-space-evenly{
+    justify-content: space-around;
+}
+.row-space-between{
+    justify-content: space-between;
+}
+.hover-increase-blur:hover{
+    transform: scale(1.1);
+}
+.underline:hover{
+    text-decoration: underline;
+}
+.bold{
+    font-weight: bold;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+
+
+#header{
+    justify-content: space-between;
+    width: 100%;
+    height: 10%;
+
+    align-items: center;
+    position: fixed;
+    top: 0px;
+    left: 0;
+
+    z-index: 20;
+}
+
+#header-center-right-side{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+#search-bar {
+    transition: border 0.3s ease; 
+    border: 2px solid transparent; 
+}
+#search-bar:hover{
+    background-color: rgb(51, 51, 51);
+}
+#search-bar:focus-within {
+    border-color: white; 
+    background-color: rgb(51, 51, 51);
+}
+
+#search-input{
+    background-color: transparent;
+    border:none;
+    height: 100%;
+    color: white;
+    height: 30px;
+    outline:none;
+    font-size: 16px;
+}
+#browse-more-search:hover{
+    color: white;
+}
+#profile-pic{
+    position: relative;
+}
+.profile-circle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#profile-options{
+    display: none;
+
+    position: absolute;
+    top: 100%; /* Appears below the profile icon */
+    right: 0;  /* Align right edge with profile icon */
+    background: #222;
+    color: white;
+   
+    
+    margin: 0;
+    border-radius: 3px;
+    width: max-content;
+    max-width: 300px; /* Adjust if needed */
+    z-index: 999;
+   
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+}
+#profile-options.show{
+    display: flex;
+}
+
+
+#profile-options button{
+    color: white;
+    font-size: 1rem;
+    font-family: Helvetica;
+    font-weight: bold;
+    background-color: transparent;
+    border:0; 
+    padding: 5px 10px;
+}
+#profile-options button:last-child{
+    border-top: 1px solid grey;
+}
+
+#profile-options button:hover{
+    background-color: #141414;
+}
+
+#left-div{
+    box-sizing: border-box;
+    padding: 20px 5px 0 5px;
+    height: 100%;
+    
+    width: 30%;
+    background-color: rgb(26, 26, 26);
+    border-radius: 20px;
+    margin-left: 20px;
+
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+#left-div *{
+    cursor: pointer;
+}
+
+.control-window-portioning{
+    height: 95%;
+    width: 15px;
+
+    position: sticky; /* Change from align-self to absolute positioning */
+    top: 2.5%;
+    margin: 0;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.control-window-portioning:hover{
+    opacity: 1;
+    cursor: grab;
+}
+.control-window-portioning:active{
+    cursor: grabbing;
+}
+.inner-control{
+    background-color: rgb(124, 124, 124);
+    width: 1px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+#right-div{
+    /*     WORK ON THIS   */
+    height: 100%;
+    width: 100%;
+    padding: 0 10px;
+
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+
+    background-color: rgb(26, 26, 26);
+    border-radius: 20px;
+    position: relative;
+
+}
+#right-div-header{  
+    padding-top: 10px;
+    padding-bottom: 5px;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgb(26, 26, 26);
+    z-index: 100;
+    padding-left: 15px;
+    width: 100%;
+}
+#right-div-header button{
+    border-radius: 15px;
+}
+#right-div-footer{
+    padding-bottom: 30px;
+}
+
+#footer-div{
+    width: 100%;
+    height: 15%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+
+
+
+.one-song{
+
+    width: 400px;
+    height: 300px;
+    border-radius: 3px;
+
+    padding: 0 10px;
+    cursor: pointer;
+}
+.one-song:hover{
+    background-color: rgb(19, 19, 19);
+}
+.track-cover{
+    width: 170px;
+    height: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    background-color: rgb(255, 255, 114);
+
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+.track-cover img{
+    width: 90%;
+    height: auto;
+}
+.one-song .play-button {
+
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.one-song:hover .play-button {
+
+    opacity: 1;
+}
+.hover-button {
+    background: transparent;
+    border: none;
+    width: min-content;
+    height: min-content;
+    font-size: 35px;
+    cursor: pointer;
+
+    opacity: 0;
+    transform: translateY(50%);
+    transition: all 0.3s ease;
+
+}
+
+.one-song:hover .play-button .hover-button {
+    opacity: 1;
+    transform: translateY(0);
+}
+.hover-button:active{
+    transform: scale(0.9);
+}
+
+
+
+.slide-x{
+    width: 100%;
+    overflow-x: auto;
+}
+.slide-y{
+    height: 100%;
+    overflow-y: auto;
+}
+
+
+/*      STYLING FOR THE MUSIC PLAYER CONTROLS DIV      */
+.player {
+    width: 100%;
+    height: 100%;
+   
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    color: white;
+}
+.player button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+.progress-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.progress-bar {
+    flex: 1;
+    margin: 0 10px;
+    appearance: none;
+    background: #555;
+    height: 5px;
+    border-radius: 5px;
+
+    width: 100%;
+}
+.progress-bar::-webkit-slider-thumb {
+    appearance: none;
+    background: white;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.volume {
+    width: 80px;
+    height: 8px;
+    --webkit-appearance: none;
+    background: linear-gradient(to right, white 0%, white var(--progress), gray var(--progress), gray 100%);
+    border-radius: 5px;
+    outline: none;
+}
+.time {
+    margin: 0 10px;
+}
+
+
+
+
+/*      SONG CONTAINER STYLES*/
+.scroll-section-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.song-scroll-container {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px 0; 
+    gap: 10px;
+}
+
+.chevron-button {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100px;
+  
+    
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    transition: background-color 0.3s ease;
+}
+
+.chevron-button.left {
+    
+    background: linear-gradient(to right, rgb(26, 26, 26), rgba(26, 26, 26, 0.6) 40%,rgba(26, 26, 26, 0));
+}
+
+.chevron-button.right {
+    right: 0;
+    
+    background: linear-gradient(to left, rgb(26, 26, 26), rgba(26, 26, 26, 0.6) 40%,rgba(26, 26, 26, 00));
+}
+
+.actual-chevron-button{
+    padding: 14px 18px;
+    background-color: rgb(19, 19, 19);
+    border-radius: 100%;
+    cursor: default;
+    color: rgb(77, 77, 77);
+}
+.actual-chevron-button:hover{
+    background-color: rgb(31, 31, 31);
+    color: white;
+}
+
+
+.chevron-button.left .actual-chevron-button {
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+
+.chevron-button.right .actual-chevron-button {
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+
+.one-song-whole-div:hover .chevron-button.left .actual-chevron-button {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.one-song-whole-div:hover .chevron-button.right .actual-chevron-button {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+
+
+#hold-recommended-songs{
+    padding-left: 40px;
+    padding-right: 60px
+}
+
+.song-scroll-container::-webkit-scrollbar{
+    display: none;
+    
+}
+
+
+
+.special-scroll-bar::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+}
+
+.special-scroll-bar::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+.special-scroll-bar::-webkit-scrollbar-thumb {
+    background: #555;
+    
+}
+
+
+/*   PLAYING TRACK STYLES   */
+#playing-song{
+    height: 90%;
+    min-width: 200px;
+    background-color: transparent;
+    align-self: flex-end;
+    border-radius: 15px;
+    margin-left: 20px;
+
+    align-items: center;
+    padding: 0 10px;
+}
+#playing-track-cover-div{
+    background-color: rgb(255, 255, 114); 
+    height: 80%; 
+    width: auto; 
+    aspect-ratio: 1/1; 
+    margin-left: 3px; 
+    border-radius: 12px;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#playing-track-cover-div:hover #expand-playing-track{
+    display: flex;
+}
+#playing-song-cover-img{
+    width: 90%;
+    height: auto;
+}
+#expand-playing-track{
+    padding: 2px; 
+    background-color: rgba(0, 0, 0, 0.6); 
+    border-radius: 50%; 
+    width: 20px;
+
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+#expand-playing-track:hover{
+    background-color: rgba(0, 0, 0, 0.9);
+}
+#playing-song-title{
+    font-size: medium;
+}
+#playing-song-author{
+    font-weight: normal; 
+    color: rgb(126, 126, 126); 
+    font-size: 12px;
+
+    overflow: auto;
+}
+#playing-song-author:hover{
+    color: white;
+}
+#like-playing-song{
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 3px;
+}
+#repeat-button{
+    border-radius: 7px;
+}
+#repeat-button.on{
+    background-color: rgb(46, 46, 46);
+}
+#shuffle-button{
+    border-radius: 7px;
+}
+#shuffle-button.on{
+    background-color: rgb(46, 46, 46);
+}
+
+
+/*      CONTROLLING THE WIDTH OF THE RIGHTMOST DIVS*/
+#control-rightmost-div-portioning{
+    display: none;
+}
+#toggle-rightmost-div{
+    width: 40%;
+    padding-right: 10px;
+    overflow-y: auto;
+    background-color: rgb(26, 26, 26);
+    border-radius: 20px;
+    padding-top: 15px;
+    padding-left: 10px;
+}
+#close-rightmost-div-font{
+    color: black;
+    border: none;
+    outline: none;
+    font-size: 1.8rem;
+    background-color: white;
+    border-radius: 50%;
+    padding: 0;
+}
+#close-rightmost-div-font:hover{
+    color: rgba(12, 12, 12, 0.3);
+}
+
+
+
+/*  SHORTCUT SEARCHING STYLES    */
+#shortcut-search-background{
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+
+    display: none;
+}
+#shortcut-search-background.show{
+    display: block;
+}
+#shortcut-search-input-outer-div{
+    background-color: #141414;
+    border-radius: 5px;
+    padding: 20px;
+    
+    position: absolute;
+    width: 60%;
+    top: 100px;
+    
+    left: 50%;
+    transform: translateX(-50%);
+}
+#shortcut-search-input-inner-div{
+    width: 100%;
+    height: 2.5rem;
+    background-color: white;
+    border-radius: 20px;
+
+    margin-bottom: 12px;
+    padding-left: 10px;
+}
+#shortcut-search-input{
+    height: 100%;
+    width: 80%;
+    justify-self: flex-end;
+    font-size: 1.5rem;
+
+    outline:none;
+    border: none;
+}
+.shortcut-search-guide-box{
+    border: 1px solid white;
+    height: 15px;
+    width: max-content;
+    padding: 5px;
+
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+/*      SMALL SONG CARD STYLING     */
+.small-song-card{
+    height: 50px;
+    width: 100%;
+
+
+}
+.small-song-card-cover{
+    height:90%;
+    width: auto;
+    aspect-ratio: 1/1;
+    background-color: rgb(255, 255, 114);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+}
+
+.small-song-card:hover .small-song-card-play-song-div{
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.small-song-card-image{
+    width: 90%;
+    height: auto;
+
+    aspect-ratio: 1/1;
+}
+.small-song-card-play-song-div{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+}
+.small-song-card-play-song-button{
+    border: 0;
+    outline: none;
+    background-color: transparent;
+    border-radius: 50%;
+
+    font-size: 1.2rem;
+}
+
+
+
+
+
+/*
+DARK SCROLLBAR
+::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 10px;
+}
+
+*/
+
+
+
+
+
+
+
+
+
+/*      CHAT STYLES     */
+#swap-to-chat{
+    height: 100%;
+}
+#swap-to-chat.hide{
+    height: 100%;
+    display: none;
+}
+
+#chat-div{
+    width: 100%;
+    height: 100%;
+    display: none;
+
+}
+#chat-div.show{
+    display: flex;
+
+}
+
+#chat-left-div{
+    width: 25%;
+    max-width: 25vw;
+    height: 100%;
+
+    background-color: rgb(26, 26, 26);
+    border-radius: 20px;
+}
+#search-user{
+    width: 100%;
+    height: 50px;
+    
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+    background-color: rgb(44, 44, 44);
+}
+#search-user input{
+    width: 80%;
+
+    height: 1.7rem;
+    font-size: 1rem;
+
+    outline: none;
+    background-color: transparent;
+    border: 3px solid rgb(2, 83, 97);
+    border-radius: 20px;
+    color: white;
+    padding: 0 7px;
+}
+#search-user input:focus{
+    border-color: rgb(6, 167, 196)
+}
+#friends-list{
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    padding-top: 10px;
+
+    position: relative;
+}
+
+#chat-right-div{
+    width: 75%;
+    max-width: 75vw;
+    height: 100%;
+    
+
+    background-color: rgb(26, 26, 26);
+    border-radius: 20px;
+
+
+}
+
+#opened-chat-header{
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: rgb(18, 48, 18);
+}
+#opened-chat-messages {
+    box-sizing: border-box;
+    padding: 20px 10px 20px 10px;
+    height: calc(100% - 100px);
+    
+    position: sticky;
+    top: 50px;
+    bottom: 50px;
+}
+#opened-chat-input{
+    position: sticky;
+    bottom: 0;
+   
+    background-color: rgb(44, 44, 44);
+    height: 50px;
+    width: 100%;
+}
+#opened-chat-input-inner-div{
+    width: 80%;
+    margin: 0 auto;
+
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+#opened-chat-input-inner-div input{
+    width: 60%;
+    height: 1.8rem;
+    font-size: 1.3rem;
+    outline: none;
+    background-color: transparent;
+    border: 3px solid rgb(18, 48, 18);
+    border-radius: 20px;
+    color: white;
+    padding: 0 7px;
+}
+#opened-chat-input-inner-div input:focus{
+    border-color:rgb(44, 197, 44);
+}
+
+
+.one-friend{
+    width: 90%;
+    height: 70px;
+    background-color: rgb(26, 80, 80);
+    border-radius: 20px;
+    
+    align-items: center;
+    padding: 0 7px;
+}
+.one-friend:hover{
+    background-color: transparent;
+    border: 3px solid green;
+    cursor: pointer;
+
+    transform: scale(1.05);
+}
+.recent-message{
+    color: rgb(204, 204, 204);
+    font-size: medium;
+}
+
+
+
+#friend-list-cover{
+    width: 100%;
+    height: 100%;
+    padding: 10px 7px;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+}
+.searched-friend-card{
+    width: 90%;
+    height: 50px;
+    background-color: rgb(11, 209, 38);
+    color: black;
+    border-radius: 20px;
+    
+    align-items: center;
+    padding: 0 7px;
+}
+
+.searched-friend-card .open-single-chat{
+    background-color: rgb(27, 41, 7);
+    border:none;
+    border-radius: 15px;
+    color: white;
+    font-size: 1.3rem;
+}
+.searched-friend-card .open-single-chat:hover{
+    box-sizing: border-box;
+    background-color: yellowgreen;
+    color: black;
+    border: 2px solid white;
+}
+#close-account-search-div-font{
+    font-size: 1.3rem;
+    color: red;
+    background-color: white;
+    width: max-content;
+    height: max-content;
+    border-radius: 50%;
+
+    margin: 0 auto;
+    z-index: 1000;
+}
+#close-account-search-div-font:hover{
+    color: rgba(255, 0, 0, 0.486);
+}
+
+
+.sent-message{
+    position: relative;
+    align-self: flex-end;
+    max-width: 50%;
+    width: max-content;
+
+    background-color: rgb(43, 92, 43);
+    padding: 10px;
+    border-radius: 20px;
+    color: white;
+    
+}
+.received-message{
+    position: relative;
+    max-width: 50%;
+    width: max-content;
+
+    background-color: rgb(59, 60, 126);
+    padding: 10px;
+    border-radius: 20px;
+    color: white;
+}
+.message{
+    font-weight: normal;
+}
+.message-time{
+    justify-self: flex-end;
+    color: rgb(196, 196, 196);
+}
+
+#opened-chat-receiver-name{
+    color: white;
+    font-weight: bold;
+    font-size: larger;
+}

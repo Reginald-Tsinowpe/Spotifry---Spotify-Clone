@@ -1,0 +1,181 @@
+body{
+    background-color: rgb(29, 29, 29);
+}
+
+p, span, label{
+    color:white;
+    font-family: Helvetica;
+}
+
+
+
+#center-div{
+    max-width: 400px;
+}
+
+.grey-out-small-text{
+    color:grey;
+    font-family: Helvetica;
+    font-size: small;
+}
+.grey-out-small-text a{
+    color: grey;
+}
+
+
+
+#terms-and-conditions-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+.some-div-bi{
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+    margin-bottom: 25px;
+
+
+}
+.some-div-bi *{
+    margin: 0;
+}
+
+
+
+.checkbox-div{
+    background-color: black;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+
+/* Hide default checkbox */
+.custom-checkbox input {
+    display: none;
+}
+
+/* Custom checkbox design */
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+}
+
+/* The box itself */
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #555;
+    border-radius: 4px;
+    display: inline-block;
+    margin-right: 8px;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Checkmark when checked */
+.custom-checkbox input:checked + .checkmark {
+    background-color: #1DB954; /* Spotify green */
+    border-color: #1DB954;
+}
+
+/* Adding a tick inside the box */
+.custom-checkbox input:checked + .checkmark::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: translate(-50%, -60%) rotate(45deg);
+}
+
+/* Hover effect */
+.custom-checkbox:hover .checkmark {
+    border-color: #1DB954;
+}
+
+
+
+.green-underline{
+    color: rgb(0, 255, 0);
+    font-family: Helvetica;
+}
+
+
+button{
+    width: 40%;
+    background-color: rgb(80, 236, 80);
+    color: rgb(29, 29, 29);
+
+    border:none;
+    padding: 10px;
+    border-radius: 20px;
+    margin-top: 20px;
+
+    font-family: Helvetica;
+    font-size: larger;
+    font-weight: bolder;
+
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+button:hover{
+    background-color: rgb(0, 255, 0);
+    color: black;
+}
+button:active{
+    transform: scale(0.9);
+}
+/*
+#finalize-signup-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #1DB954;
+    color: white;
+    border-radius: 5px;
+    
+    min-width: 100px;
+}
+
+ Dots container */
+.dots {
+    display: flex;
+    gap: 4px;
+}
+
+/* Each dot */
+.dots span {
+    width: 6px;
+    height: 6px;
+    background-color: rgb(29, 29, 29);
+    border-radius: 50%;
+    display: inline-block;
+    animation: blink 1.4s infinite;
+}
+
+/* Animations for each dot */
+.dots span:nth-child(1) { animation-delay: 0s; }
+.dots span:nth-child(2) { animation-delay: 0.2s; }
+.dots span:nth-child(3) { animation-delay: 0.4s; }
+
+/* Blinking effect */
+@keyframes blink {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
+}

@@ -1,0 +1,63 @@
+services:
+  apache:
+    build: .
+    ports:
+      - "8080:80"  # Main website
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
+    environment:
+      
+      # Database credentials
+      DB_HOSTNAME: mysql
+      DB_USERNAME: root
+      DB_PASSWORD: rootpass
+      DB_NAME: db_spotifry_clone
+      DB_PORT: 3306
+
+      SMTP_USER: tsinowpe.business@gmail.com
+      SMTP_PASSWORD: uzld pxsp xzpr fzpp
+    networks:
+      - app-network
+
+  websocket:
+    build: .
+    command: php listen/server/chat-server.php
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
+    environment:
+      DB_HOSTNAME: mysql
+      DB_USERNAME: root
+      DB_PASSWORD: rootpass
+      DB_NAME: db_spotifry_clone
+    networks:
+      - app-network
+    ports:
+      - "8081:8080"  # WebSocket server
+
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: db_spotifry_clone
+    volumes:
+       - mysql_data:/var/lib/mysql
+       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+    ports:
+      - "3306:3306"
+    
+
+
+networks:
+  app-network:
+    driver: bridge
+
+
+volumes:
+  mysql_data:

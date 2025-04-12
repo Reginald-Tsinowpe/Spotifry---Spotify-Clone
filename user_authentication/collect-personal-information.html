@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="static/collect-personal-information-styles.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <title></title>
+</head>
+<body>
+
+    <div id="custom-alert" class="modal">
+        <div class="modal-content">
+            <h3>Looks like you're <span class="current-age"></span> years old?</h3>
+            <p>Based on your date of birth, you're currently <span class="current-age"></span> years old. is that right?</p>
+            
+            <button id="confirm-btn">That's Right</button>
+            <button id="edit-btn">Edit</button>
+        </div>
+    </div>
+
+
+    <div id="collect-personal-information-div">
+        <i class="fa-brands fa-spotify fa-2xl logo-in-div" style="color: #ffffff;"></i>
+
+        <div id="progression-bar">
+            <div id="green-bar"></div>
+        </div>
+
+            <div id="progress-completion-bar"></div>
+
+        <div id="center-div">
+
+            <div class="some-div-bi">
+                <p>Step 2 of 3</p>
+                <p>Tell us about yourself</p>
+            </div>
+<form id="information-collection-form">
+    <div id="name-div">
+                <span>Name</span>
+                <span class="grey-out-small-text">This name will appear on your profile</span>        
+                <input type="text" id="name-input" required>
+            </div>
+
+            <div id="gender-div">
+                <span>Gender</span>
+                <span class="grey-out-small-text">We use your gender to help personalize our<br>content recommendations and ads for you.</span>
+                <div>
+                    <label for="">
+                        <input type="radio" name="gender" value="man" required>Man
+                    </label>
+
+                    <label for="">
+                        <input type="radio" name="gender" value="woman" required>Woman
+                    </label>
+                    
+                    <label for="">
+                        <input type="radio" name="gender" value="non-binary" required>Non-binary
+                    </label>
+
+                    <label for="" >
+                        <input class="span-all-three" type="radio" name="gender" value="prefer-not-to-say" required>Prefer not to say
+                    </label>
+                </div>
+
+            </div>
+
+            <div id="date-of-birth-div">
+                <span>Date of birth</span>
+                <span class="grey-out-small-text">Why do we need your date of birth? <a href="">Learn more</a></span>
+                <div>
+                    <input type="number" placeholder="dd" min="1" max="31" class="input-number" id="birth-day"  required>
+
+                    <select name="" id="birth-month" required>
+                        <option value="Month">Month</option>
+                        <option value="January">January</option>
+                        <option value="February">February</option>
+                        <option value="March">March</option>
+                        <option value="April">April</option>
+                        <option value="May">May</option>
+                        <option value="June">June</option>
+                        <option value="July">July</option>
+                        <option value="August">August</option>
+                        <option value="September">September</option>
+                        <option value="October">October</option>
+                        <option value="November">November</option>
+                        <option value="December">December</option>
+                    </select>
+                    <input type="number" placeholder="yyyy" min="1990" class="input-number" id="birth-year"  required>
+                </div>
+            </div>
+
+            <p id="dob-year-error" style="color:red; font-size: small;"></p>
+            <p id="dob-day-error" style="color:red; font-size: small;"></p>
+            <p id="dob-month-error" style="color:red; font-size: small;"></p>
+
+            <button id="next-button" type="submit">Next</button>
+
+        </div>
+</form>
+            
+    </div>
+    
+
+
+    <script src="static/collect-personal-information-script.js"></script>
+</body>
+</html>

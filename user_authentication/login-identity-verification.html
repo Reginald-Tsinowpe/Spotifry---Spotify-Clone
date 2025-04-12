@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <script src="https://accounts.google.com/gsi/client"></script>
+    
+    <script>
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token: " + response.credential);
+            // Send token to your backend to verify and log in the user
+        }
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="static/login-identity-verification-styles.css">
+     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <title>Login - Spotifry</title>
+</head>
+<body>
+    
+    <!--        SINUP OR LOGIN DIV-->
+    <div id="login-or-signup-div">
+
+        <i class="fa-brands fa-spotify fa-2xl logo-in-div" style="color: #ffffff;"></i>
+
+
+        <div id="identity-verification-password">
+
+            <h1 style="font-family: Helvetica; color: white; margin-bottom:0; text-align: center;" id="login-signup-header">Login to Spotify</h1>
+
+            <div style="display: flex; flex-direction: column; gap: 10px; align-items: center; margin-top: 20px; margin-bottom: 10px;">
+                <div class="g_id_signin" data-type="standard" data-text="continue_with"></div>
+
+                <p style="color:white; font-weight: bold; font-family: Helvetica; background-color: rgb(151, 10, 10); padding: 7px; border-radius: 5px; margin: 0;" onclick="alert('This Feature is still in development');">Facebook</p>
+                <p style="color:white; font-weight: bold; font-family: Helvetica; background-color: rgb(151, 10, 10); padding: 7px; border-radius: 5px; margin: 0;" onclick="alert('This Feature is still in development');">Apple</p>
+                <p style="color:white; font-weight: bold; font-family: Helvetica; background-color: rgb(151, 10, 10); padding: 7px; border-radius: 5px; margin: 0;" onclick="alert('This Feature is still in development');">Phone Number</p>
+
+            </div>
+                
+                <hr style="width: 100%; align-self: center;">
+
+
+                <div class="identity-information-div">
+                    <label style="display: flex; flex-direction: column; gap: 10px;"><span style="color:white; font-weight: bold; font-family: Helvetica;">Email or username</span>
+                            <input type="text" id="username-email-login-input" class="username-email-login-input" placeholder="Email or username" required>
+                    </label>
+                    <label style="display: flex; flex-direction: column; gap: 10px;"><span style="color:white; font-weight: bold; font-family: Helvetica;">Password</span>
+                        <input type="password" id="user-password-input" class="username-email-login-input" placeholder="Password" required>
+                    </label>
+                    <p id="incorrect-password-prompt" style="color:red; font-family: Helvetica;"></p>
+                    
+
+                    <button id="submit-password" class="login-signup-button">Log In</button>
+
+                    <p id="switch_login_method" onclick="Switch_To_OTP_Verification()" style="color:white; font-family:Helvetica; text-decoration: underline; cursor: pointer;">Log in without password</p>
+
+                </div>             
+
+
+        </div>
+
+
+
+
+            <div id="identity-verification-otp">
+                <div class="identity-information-div">
+                <h2 style="color:white; font-family: Helvetica;">Enter the 6-digit code sent to<br>you at <span id="email_name"></span>.</h2>
+
+                <input type="text" id="otp-code-input" class="username-email-login-input">
+                <button type="button" onclick="Send_OTP_Code()" class="resend-otp-button">Resend code</button>
+
+                <button type="button"  class="login-signup-button" id="verify-otp-code">Log in</button>
+
+                <div style="display:flex;"><hr style="display:flex; flex-grow: 1;"><span style="color: white; margin: 0 5px;">or</span><hr  style="display:flex; flex-grow: 1;"></div>
+
+                <p onclick="Switch_To_Password_Login()" style="color:white; font-family:Helvetica; text-decoration: underline; cursor: pointer;">Log in with a password</p>
+
+                </div>
+
+            </div>
+
+            <div id="signup-or-login-instead"><span class="question">Don't have an account?</span> <span id="signup-instead-button" data-mode="login">Sign up for Spotify</span></div>
+
+        </div>
+
+
+
+        
+
+
+
+
+        <script src="static/login-identity-verification-script.js"></script>
+
+        <script>
+            document.getElementById("identity-verification-otp").style.display = "none";
+        </script>
+
+    
+    <script>
+        Run_On_Start();  // Call the function after the script is loaded
+    </script>
+</body>
+</html>
