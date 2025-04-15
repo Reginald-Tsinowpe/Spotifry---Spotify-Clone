@@ -16,8 +16,8 @@ services:
       DB_NAME: db_spotifry_clone
       DB_PORT: 3306
 
-      SMTP_USER: tsinowpe.business@gmail.com
-      SMTP_PASSWORD: uzld pxsp xzpr fzpp
+      SMTP_USER: gmail username
+      SMTP_PASSWORD: gmail app password
     networks:
       - app-network
 
