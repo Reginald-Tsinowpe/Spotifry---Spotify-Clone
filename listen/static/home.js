@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(){
+    fetchSongsWithLoading();
     document.getElementById("playlist-div").innerHTML = `
             <p class="left-div-header">Create your first playlist</p>
             <p>It's easy, we'll help you</p>
@@ -82,28 +83,38 @@ function Switch_To_Fullscreen(){
     }
 }
 
-
+let small_cards = '';
 //      FETCH THE SONGS AND ORDER THEM TO PLAY
-fetch("./php-scripts/fetch-songs-in-db.php",
-    {
+// Modified fetch function with loading animation
+function fetchSongsWithLoading() {
+    showLoading();
+    
+    fetch("./php-scripts/fetch-songs-in-db.php", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({action: "fetch-all-songs"})
-    }
-).then(response => response.json()).then(data => {
-    if (data.success){
-        musicList = data.success;
-        originalList = [...musicList];
-        Display_Musics(musicList);
-/*      REMOVE THE THREE LINES ABOVE AND COMMENT THE THREE BELOW IS THERE ARE ANY PROBLEMS
-        Display_Musics(data.success);
-*/
-    } else{
-        alert(data.error);
-    }
-}).catch(error => console.log("AJAX Error: ", error));
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            musicList = data.success;
+            originalList = [...musicList];
+            small_cards = data.small_html;
+            Display_Musics(data.success, data.html);
+        } else {
+            alert(data.error);
+        }
+    })
+    .catch(error => {
+        console.log("AJAX Error: ", error);
+        alert("Failed to load songs. Please try again.");
+    }).finally(() => {
+        hideLoading();
+    });
+    
+}
 
-function Display_Musics(music_object) {
+function Display_Musics(music_object, htmlCards) {
     musicList = music_object;
     originalList = [...musicList];
 
@@ -123,17 +134,9 @@ function Display_Musics(music_object) {
     const popularSongs = music_object.slice(chunkSize, chunkSize * 2);
     const trendingSongs = music_object.slice(chunkSize * 2);
 
-    recommendedSongs.forEach((song, index) => {
-        recommendedContainer.appendChild(Create_Song_Card(song, index));
-    });
-
-    popularSongs.forEach((song, index) => {
-        popularContainer.appendChild(Create_Song_Card(song, index + chunkSize));
-    });
-
-    trendingSongs.forEach((song, index) => {
-        trendingContainer.appendChild(Create_Song_Card(song, index + chunkSize * 2));
-    });
+    recommendedContainer.innerHTML = htmlCards.slice(0, chunkSize).join('');
+    popularContainer.innerHTML = htmlCards.slice(chunkSize, chunkSize * 2).join('');
+    trendingContainer.innerHTML = htmlCards.slice(chunkSize * 2).join('');
 
     // Optional: Handle play button event delegation
     [recommendedContainer, popularContainer, trendingContainer].forEach(container => {
@@ -148,26 +151,6 @@ function Display_Musics(music_object) {
 }
 
 
-function Create_Song_Card(song, index) {
-    const div = document.createElement("div");
-    div.className = "one-song display-flex-column";
-    div.innerHTML = `
-        <div class="track-cover">
-            <img src="${song.cover || './assets/no-album.png'}" alt="${song.title} cover" />
-            <div class="play-button">
-                <button class="hover-button" data-index="${index}">
-                    <i class="fa-solid fa-circle-play" style="color: rgb(50, 211, 50); background-color: black; border-radius: 100%; font-size: 3.5rem;"></i>
-                </button>
-            </div>
-        </div>
-        <div class="song-info">
-            <div class="song-title underline bold">${song.title}</div>
-            <div class="artist color-grey">${song.artists}</div>
-        </div>
-    `;
-    return div;
-}
-
 const audio = document.getElementById("mainAudio");
 const playBtn = document.getElementById("play");
 
@@ -180,6 +163,7 @@ let musicList = []; // Holds your list of songs
 let originalList = [];
 let shuffle = false;
 let repeat = false;
+let shuffledOrder = [];
 
 function updatePlayIcon() {
     playBtn.innerHTML = isPlaying
@@ -194,21 +178,23 @@ function loadSong(song) {
 
 
 // Play Song by index
+// Modified playSongAt function
 function playSongAt(index) {
     if (!musicList || index >= musicList.length) return;
 
+    // If shuffle is on, we need to map the index to the shuffled order
+    const actualIndex = shuffle ? shuffledOrder[index] : index;
     currentTrackIndex = index;
 
-    const nowPlaying = musicList[index];
+    const nowPlaying = musicList[actualIndex];
     loadSong(nowPlaying);
     audio.play().then(() => {
         isPlaying = true;
         updatePlayIcon();
-        Update_Playing_Song_Div(index);
+        Update_Playing_Song_Div(actualIndex);
         Render_Queue();
     }).catch(err => console.error("Playback error: ", err));
 }
-
 
 
 playBtn.addEventListener("click", () => {
@@ -429,95 +415,54 @@ function Shortcut_Search(){
     alert('This function is still in development. You will be notified when it is ready to use.');
     document.getElementById("shortcut-search-background").classList.toggle("show");
 }
+
+
+
 /*  HANDLE MUSIC QUEUING    */
 //  DISPLAYING THE QUEUE DIV
-function Create_Small_Song_Card(song, index){
-    let song_card = document.createElement('div');
-    song_card.classList.add("display-flex-row", "row-space-between", "small-song-card");
-    song_card.innerHTML = `
-        <div class="display-flex-row gap-10">
-            <div class="small-song-card-cover">
-                <img src="./assets/no-album.png" class="small-song-card-image">
-                <div class="small-song-card-play-song-div">
-                    <button class="hover-increase-blur small-song-card-play-song-button" data-index="${index}"><i class="fa-solid fa-play" style="color: #ffffff;"></i></button>
-                </div>
-            </div> 
-
-            <div class="small-song-card-info">
-                <div class="song-title underline bold">${song.title}</div>
-                <div class="artist color-grey ">${song.artists}</div>
-            </div>
-        </div>  
-
-        <div class="small-song-card-options">
-            <i class="fa-solid fa-ellipsis" style="color: #ffffff;"></i>
-        </div>
-    `;
-    
-    song_card.querySelector('.small-song-card-play-song-button').addEventListener('click', (e) => {
-        const songIndex = parseInt(e.currentTarget.dataset.index);
-        playSongAt(songIndex);
-    });
-
-    return song_card;
-}
-/*
-document.getElementById("queue-button").addEventListener('click', function() {
-    if (rightmost_div.style.display == 'none'){
-        Open_Rightmost_Div();
-
-        document.getElementById("rightmost-div-header-name").textContent = "Queue";
-
-        let rightmost_inner_div = document.getElementById("rightmost-div-inner-content")
-        rightmost_inner_div.innerHTML = "";
-        const now_playing_text = document.createElement('h3')
-        now_playing_text.textContent="Now Playing"
-        rightmost_inner_div.appendChild(now_playing_text);
-
-        // MAKE IT THE SONG THAT IS CURRENTLY PLAYING
-        let currently_playing_song = Create_Small_Song_Card(musicList[0], 0);
-        rightmost_inner_div.appendChild(currently_playing_song);
-
-        const next_playing_text = document.createElement('h3')
-        next_playing_text.textContent="Next Up"
-        rightmost_inner_div.appendChild(next_playing_text);
-        
-        musicList.slice(1).forEach((song, index) => {
-            rightmost_inner_div.appendChild(Create_Small_Song_Card(song, index));
-        })
-        
-    }else{
-        Close_Rightmost_Div();
-    }
-    
-    
-});
-*/
+// Modified Render_Queue function
 function Render_Queue() {
     if (!musicList.length) return;
 
     const rightmost_inner_div = document.getElementById("rightmost-div-inner-content");
     rightmost_inner_div.innerHTML = "";
 
-    const now_playing_text = document.createElement('h3');
-    now_playing_text.textContent = "Now Playing";
-    now_playing_text.style = "margin:0;";
+    // Create header for current track
+    const nowPlayingHeader = document.createElement('h3');
+    nowPlayingHeader.textContent = "Now Playing";
+    nowPlayingHeader.style.margin = "0";
+    rightmost_inner_div.appendChild(nowPlayingHeader);
 
-    rightmost_inner_div.appendChild(now_playing_text);
+    // Add current track
+    const currentCard = document.createElement('div');
+    const currentSongIndex = shuffle ? shuffledOrder[currentTrackIndex] : currentTrackIndex;
+    currentCard.innerHTML = small_cards[currentSongIndex];
+    currentCard.querySelector('.small-song-card').setAttribute('data-index', currentTrackIndex);
+    rightmost_inner_div.appendChild(currentCard);
 
-    // Currently playing song
-    const nowPlaying = Create_Small_Song_Card(musicList[currentTrackIndex], currentTrackIndex);
-    rightmost_inner_div.appendChild(nowPlaying);
+    // Create header for upcoming tracks
+    const upNextHeader = document.createElement('h3');
+    upNextHeader.textContent = "Up Next";
+    upNextHeader.style.margin = "0";
+    rightmost_inner_div.appendChild(upNextHeader);
 
-    const up_next_text = document.createElement('h3');
-    up_next_text.textContent = "Up Next";
-    up_next_text.style = "margin:0;";
-    rightmost_inner_div.appendChild(up_next_text);
-
+    // Add upcoming tracks
     for (let i = currentTrackIndex + 1; i < musicList.length; i++) {
-        const songCard = Create_Small_Song_Card(musicList[i], i);
-        rightmost_inner_div.appendChild(songCard);
+        const card = document.createElement('div');
+        const songIndex = shuffle ? shuffledOrder[i] : i;
+        card.innerHTML = small_cards[songIndex];
+        card.querySelector('.small-song-card').setAttribute('data-index', i);
+        rightmost_inner_div.appendChild(card);
     }
+
+    // Add event listeners to all play buttons
+    rightmost_inner_div.querySelectorAll('.small-song-card-play-song-button').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const card = e.target.closest('.small-song-card');
+            const index = parseInt(card.getAttribute('data-index'));
+            playSongAt(index);
+        });
+    });
 }
 
 document.getElementById("queue-button").addEventListener('click', function() {
@@ -550,19 +495,9 @@ audio.addEventListener("ended", function(){
 });
 function handleNextSong() {
     if (repeat) {
-        // Repeat the same song
         playSongAt(currentTrackIndex);
-        
     } else {
-        // Move to the next song
-        currentTrackIndex++;
-
-        // Loop back if reached end of list
-        if (currentTrackIndex >= musicList.length) {
-            currentTrackIndex = 0;
-        }
-
-        playSongAt(currentTrackIndex);
+        Play_Next_Song();
     }
 }
 
@@ -570,46 +505,56 @@ function handleNextSong() {
 /*      SHUFFLING MUSICS - QUEUE    */
 document.getElementById("shuffle-button").addEventListener("click", function() {
     shuffle = !shuffle;
-
-    const currentSong = musicList[currentTrackIndex];  // "Now Playing" song
-
+    
     if (shuffle) {
-        // Get the remaining songs excluding the "Now Playing" song
-        const remaining = [...musicList.slice(0, currentTrackIndex), ...musicList.slice(currentTrackIndex + 1)];
-        const shuffled = shuffleArray(remaining);  // Shuffle the rest of the songs
-
-        // Rebuild musicList with the "Now Playing" song at its position
-        musicList = [
-            ...shuffled.slice(0, currentTrackIndex),
-            currentSong,  // Insert the "Now Playing" song back at its position
-            ...shuffled.slice(currentTrackIndex)
-        ];
-
+        // When turning shuffle on
         this.classList.add('on');
-        playSongAt(0);
+        
+        // Store the current song
+        const currentSong = musicList[currentTrackIndex];
+        
+        // Create a shuffled order
+        shuffledOrder = [...Array(musicList.length).keys()];
+        
+        // Fisher-Yates shuffle
+        for (let i = shuffledOrder.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledOrder[i], shuffledOrder[j]] = [shuffledOrder[j], shuffledOrder[i]];
+        }
+        
+        // Make sure current song is first in the shuffled order
+        const currentSongIndex = shuffledOrder.indexOf(currentTrackIndex);
+        if (currentSongIndex !== -1) {
+            [shuffledOrder[0], shuffledOrder[currentSongIndex]] = [shuffledOrder[currentSongIndex], shuffledOrder[0]];
+        }
+        
+        // Update the current track index to 0 since it's now first
+        currentTrackIndex = 0;
         
     } else {
-        // Reset to original order, keeping "Now Playing" song in place
-        const restSongs = originalList.filter(song => song !== currentSong);
-        musicList = [currentSong, ...restSongs];
-
-        // Keep the index the same in original list
-        currentTrackIndex = originalList.findIndex(song => song === currentSong);
-
+        // When turning shuffle off
         this.classList.remove('on');
         
+        // Find the current song in the original list
+        const currentSong = musicList[shuffledOrder[currentTrackIndex]];
+        currentTrackIndex = originalList.findIndex(song => 
+            song.location === currentSong.location
+        );
+        
+        // Reset the music list to original order
+        musicList = [...originalList];
     }
-
-    Render_Queue(); // ⬅️ Update queue display
+    
+    Render_Queue();
 });
 
-// Fisher-Yates Shuffle function
-function shuffleArray(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
+function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]]; // Swap
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
     }
-    return arr;
+    return newArray;
 }
 
 
@@ -666,15 +611,123 @@ function formatTime(t) {
 }
 
 
+// Modified next/previous song functions
 function Play_Next_Song() {
-    currentTrackIndex = (currentTrackIndex + 1) % musicList.length;
+    if (shuffle) {
+        currentTrackIndex = (currentTrackIndex + 1) % musicList.length;
+    } else {
+        currentTrackIndex = (currentTrackIndex + 1) % musicList.length;
+    }
     playSongAt(currentTrackIndex);
 }
 
 function Play_Previous_Song() {
-    currentTrackIndex = (currentTrackIndex - 1 + musicList.length) % musicList.length;
+    if (shuffle) {
+        currentTrackIndex = (currentTrackIndex - 1 + musicList.length) % musicList.length;
+    } else {
+        currentTrackIndex = (currentTrackIndex - 1 + musicList.length) % musicList.length;
+    }
     playSongAt(currentTrackIndex);
 }
+
+
+
+
+
+
+
+
+
+
+/*   SONG LOADING ANIMATIONS      */  
+// Add this CSS to your stylesheet or in a <style> tag
+const loadingStyles = `
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column;
+}
+    .wave-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    gap: 5px;
+}
+
+.wave-bar {
+    width: 5px;
+    height: 20px;
+    background-color: #1DB954;
+    animation: wave 1.2s ease-in-out infinite;
+}
+
+.wave-bar:nth-child(1) { animation-delay: 0s; }
+.wave-bar:nth-child(2) { animation-delay: 0.1s; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { animation-delay: 0.3s; }
+.wave-bar:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes wave {
+    0%, 100% { height: 20px; }
+    50% { height: 50px; }
+}
+
+.loading-text {
+    color: white;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+`;
+
+// Add the styles to the document
+const styleElement = document.createElement('style');
+styleElement.innerHTML = loadingStyles;
+document.head.appendChild(styleElement);
+
+// Create loading overlay element
+const loadingOverlay = document.createElement('div');
+loadingOverlay.className = 'loading-overlay';
+//loadingOverlay.innerHTML = `
+ //   <div class="loading-spinner"></div>
+ //   <div class="loading-text">Loading your music...</div>
+//`;
+loadingOverlay.innerHTML = `
+<div class="wave-container">
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+    </div>
+    <div class="loading-text">Loading your music...</div>
+`;
+
+// Show loading animation
+function showLoading() {
+    document.body.appendChild(loadingOverlay);
+}
+
+// Hide loading animation
+function hideLoading() {
+    if (document.body.contains(loadingOverlay)) {
+        document.body.removeChild(loadingOverlay);
+    }
+}
+
+
+
+// Replace the original fetch call with the new one
+
 /*
 
 TRACK REMAINING TIME
@@ -687,12 +740,12 @@ ALPHA BETA? OWNS GOOGLE?
 
 /*      CHAT SCRIPTS */ 
 function setupWebSocket() {
-    const socket = new WebSocket("ws://16.171.145.40:8081");
-    //const socket = new WebSocket("ws://localhost:8081");
+    //const socket = new WebSocket("ws://16.171.145.40:8081");
+    const socket = new WebSocket("ws://localhost:8080");
     socket.onclose = () => setTimeout(setupWebSocket, 5000); // Reconnect after 5s
     return socket;
 }
-const SOCKET = setupWebSocket();
+let SOCKET = setupWebSocket();
 SOCKET.addEventListener("open", () => {
 const USERNAME = sessionStorage.getItem("user_name");
 if (!USERNAME){
@@ -733,7 +786,7 @@ function Open_Chat_Page(){
             body: form_data
         }
     ).then(response => response.json()).then(data => {
-        console.log(data);
+
         if (data.success){
             friendlist_container = document.getElementById("friends-list");
             friendlist_container.innerHTML = '';
@@ -984,7 +1037,6 @@ document.getElementById("friends-list").addEventListener("click", function(e) {
         Fetch_Opened_Chat_Data(username); 
     }
 });
-
 
 document.getElementById("search-user-input").addEventListener("focus", () => {
     document.getElementById("friend-list-cover").style.display = 'flex';

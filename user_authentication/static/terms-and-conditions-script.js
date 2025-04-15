@@ -7,8 +7,7 @@ document.getElementById("finalize-signup-button").addEventListener("click", func
         action: "make-user-permanent"
     });
 
-
-
+ 
     fetch("./php-scripts/handle_user_signup.php",
         {
             method: "POST",
@@ -19,14 +18,18 @@ document.getElementById("finalize-signup-button").addEventListener("click", func
         if (data.success) {
             sessionStorage.clear();
             sessionStorage.setItem("user_name", data.success);
-            window.location.href = "./listen/";
+
+            
+            window.location.href = "./../listen/";
         }else if (data.error){
             alert(data.error);
             console.log(data.error);
             toggleLoading();
         }
 
-    }).catch(error => console.log("AJAX Error: ", error));
+    }).catch(error => {console.log("AJAX Error: ", error);
+        toggleLoading();}
+    );
     
 });
 

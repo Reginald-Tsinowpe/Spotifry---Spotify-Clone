@@ -1,11 +1,8 @@
 <?php
 session_start();
 require_once  __DIR__ . '/../../config/config.php'; // Ensure correct path to config
-
-//REMOVE ERROR REPORTING CODE ONCE DONE
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 header("Content-Type: application/json");
+
 
 
 // Get the incoming JSON request
@@ -57,6 +54,7 @@ switch ($action) {
 
     case "make-user-permanent":
         if (isset($data['email'], $data['log_in_user'])){
+            
             Migrate_User_Data($data['email'], $data['log_in_user']);
         } else{
             echo json_encode(["error" => "Could not sign you up"]);
@@ -71,8 +69,11 @@ switch ($action) {
 
 // Function to handle user signup
 function Add_User_Email_To_Unverified_User_DB($email) {
+    
     // TODO: Insert into an unverified user database table
     global $conn;
+    echo json_encode(["error" => "script is working"]);
+exit;
     //  CHECK IF EMAIL EXISTS IN UNVERIFIED USER TABLE - DUPLICATE LOGIN
     $check_temp_user_stmt = $conn->prepare("SELECT * FROM `tbl_unverified_user` WHERE `email`=?");
     $check_temp_user_stmt->bind_param('s', $email);
@@ -209,7 +210,9 @@ function convertBirthDate($birth_day, $birth_month, $birth_year) {
 
 //  FUNCTION TO MOVE USER DATA INTO THE VERIFIED USER TABLE
 function Migrate_User_Data($email, $signup_and_login) {
+
     global $conn;
+    
 
     if ($signup_and_login) {
         // Fetch user data from unverified table
@@ -244,6 +247,7 @@ function Migrate_User_Data($email, $signup_and_login) {
             "INSERT INTO `tbl_user_data` (`email`, `password`, `user_name`, `phone`, `gender`, `date_of_birth`)
              VALUES (?, ?, ?, ?, ?, ?)"
         );
+        
 
         // Bind parameters, allowing NULL values
         $insert_as_permanent_user->bind_param(
@@ -255,10 +259,17 @@ function Migrate_User_Data($email, $signup_and_login) {
             $user_gender,
             $user_dob
         );
+     
+       
 
         // Execute and handle errors
-        if ($insert_as_permanent_user->execute()) {
+        if  ($insert_as_permanent_user->execute()) {
             //DELETE USER
+            $delete_temp = $conn->prepare("DELETE FROM `tbl_unverified_user` WHERE `email` = ?");
+            $delete_temp->bind_param('s', $user_email);
+            $delete_temp->execute();
+            $delete_temp->close();
+            
 
 
             //START SESSION

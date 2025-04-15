@@ -219,7 +219,7 @@ function Signup_User_Email(event){
         if (data.success){
             // TO DO
             sessionStorage.setItem("user_email", user_email);
-            window.location.href = "./password-or-verify-email.html";
+            window.location.href = "./password-creation.html";
 
         } else if(data.error) {
             alert(data.error)

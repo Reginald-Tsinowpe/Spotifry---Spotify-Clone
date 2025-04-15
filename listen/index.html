@@ -102,19 +102,20 @@
             <div id="chat-div" class="display-flex-row gap-10">
 
                 <div id="chat-left-div" class="display-flex-column" style="overflow-y: auto;">
-                    <div id="search-user">
-                        <input type="search" placeholder="search..." id="search-user-input">
-                    </div>
+                        <div id="search-user">
+                            <input type="search" placeholder="search..." id="search-user-input">
+                        </div>
+                    <div style="position: relative; height: 100%; width: 100%;">
+                        <div id="friends-list" class="display-flex-column gap-10">
+                        </div>
 
-                    <div id="friends-list" class="display-flex-column gap-10">
-                        
-                            <div id="friend-list-cover" class="display-flex-column gap-10">
-                                <button onclick="Close_Search_For_Friends_Div()" style="outline: none;background-color: transparent; padding: 0; border-radius: 50%; width: max-content; height:max-content; border: 0;">
-                                    <i class="fa-solid fa-circle-xmark" id="close-account-search-div-font"></i>
-                                </button>
-                                
-                                <div id="friend-search-results-container" class="display-flex-column gap-10"></div>
-                            </div>
+                        <div id="friend-list-cover" class="display-flex-column gap-10">
+                            <button onclick="Close_Search_For_Friends_Div()" style="outline: none;background-color: transparent; padding: 0; border-radius: 50%; width: max-content; height:max-content; border: 0;">
+                                <i class="fa-solid fa-circle-xmark" id="close-account-search-div-font"></i>
+                            </button>
+                            
+                            <div id="friend-search-results-container" class="display-flex-column gap-10"></div>
+                        </div>
 
                     </div>
 

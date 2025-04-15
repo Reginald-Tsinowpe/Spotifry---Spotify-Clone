@@ -1,18 +1,12 @@
 <?php
+require_once './../../config/config.php';
+require_once './../components/create-song-card.php';
+require_once './../components/create-small-song-card.php';
 
-session_start();
-require_once './../../config/config.php'; // Ensure correct path to config
-
-//REMOVE ERROR REPORTING CODE ONCE DONE
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 header("Content-Type: application/json");
 
-
-// Get the incoming JSON request
 $data = json_decode(file_get_contents("php://input"), true);
 
-// Check if 'action' is set
 if (!isset($data['action'])) {
     echo json_encode(["error" => "No action specified"]);
     exit;
@@ -20,28 +14,35 @@ if (!isset($data['action'])) {
 
 $action = $data['action'];
 
-// Route the request based on the 'action' value
 switch ($action) {
     case "fetch-all-songs":
         global $conn;
-
         $result = $conn->query("SELECT * FROM `tbl_musics`");
-
+        
         $rows = [];
         if ($result) {
             while ($row = $result->fetch_assoc()) {
                 $rows[] = $row;
             }
-            echo json_encode(["success" => $rows]);
+            
+            // Instead of returning raw data, return rendered HTML
+            $htmlOutput = [];
+            foreach ($rows as $index => $song) {
+                $htmlOutput[] = renderSongCard($song, $index);
+            }
+            $songs = $rows;
+            $response = [
+                'success' => $songs,
+                'html' => array_map('renderSongCard', $songs, array_keys($songs)),
+                'small_html' => array_map('renderSmallSongCard', $songs, array_keys($songs), array_fill(0, count($songs), false))
+            ];
+            echo json_encode($response);        
         } else {
             echo json_encode(["error" => "No music found"]);
         }
         break;
 
-
     default:
-        return;
-    
+        echo json_encode(["error" => "Invalid action"]);
 }
-
 ?>

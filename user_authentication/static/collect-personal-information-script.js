@@ -59,11 +59,15 @@ document.getElementById("information-collection-form").addEventListener('submit'
             birth_day : document.getElementById("birth-day").value,
             birth_month : document.getElementById("birth-month").value,
             birth_year : document.getElementById("birth-year").value,
-            email: sessionStorage.getItem("user_email"),
 
+            email: sessionStorage.getItem("user_email"),
             action: "add-user-personal-information"
     }
     );
+
+    
+
+
  
 
     fetch("./php-scripts/handle_user_signup.php",
