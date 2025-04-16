@@ -741,7 +741,7 @@ ALPHA BETA? OWNS GOOGLE?
 /*      CHAT SCRIPTS */ 
 function setupWebSocket() {
     //const socket = new WebSocket("ws://16.171.145.40:8081");
-    const socket = new WebSocket("ws://localhost:8080");
+    const socket = new WebSocket("wss://ec2-16-171-145-40.eu-north-1.compute.amazonaws.com/ws");
     socket.onclose = () => setTimeout(setupWebSocket, 5000); // Reconnect after 5s
     return socket;
 }
@@ -839,7 +839,7 @@ function reconnectWebSocket() {
     }
 
     // Re-establish the WebSocket connection
-    SOCKET = new WebSocket('ws://localhost:8080'); // Replace with your actual WebSocket server URL
+    SOCKET = new WebSocket("wss://ec2-16-171-145-40.eu-north-1.compute.amazonaws.com/ws"); // Replace with your actual WebSocket server URL
 
     SOCKET.onopen = function() {
         console.log("WebSocket reconnected.");
